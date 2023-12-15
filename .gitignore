@@ -1,0 +1,30 @@
+# Compiled output
+/dist
+/tmp
+/out-tsc
+
+# Dependencies
+node_modules
+
+# Angular generated files
+*.js
+*.js.map
+*.d.ts
+
+# End-to-end tests
+e2e/*.js
+e2e/*.map
+
+# System and project files
+.angular
+.angular_cli
+.vscode
+.idea
+
+# User-specific files
+.history
+.npm
+*.log
+*.lock
+*.sqlite
+*.swp
