@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Lobby } from '../lobby';
 import { LobbyService } from '../lobby.service';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-lobby-list',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, NgIf],
   templateUrl: './lobby-list.component.html',
   styleUrl: './lobby-list.component.css'
 })

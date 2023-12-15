@@ -1,0 +1,17 @@
+.lobby-element {
+    display: flex;
+    background-color: white;
+    border-radius: 20px;
+    height: 50px;
+    margin-top: 0.5%;
+    width: 60%;
+    align-items: center;
+}
+
+.lobby-value-left {
+    margin-left: 2%;
+}
+
+#lobby-name {
+    width: 83%;
+}
