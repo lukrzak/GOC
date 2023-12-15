@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  lobby-frontend:
+    image: lobby-frontend
+    container_name: 'Goc-Lobby-Frontend'
+    ports:
+      - "4201:4200"
+    
