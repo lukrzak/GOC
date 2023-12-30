@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+import static com.lukrzak.goc.lobbybackend.LobbyBackendApplication.BASE_URL;
+
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping(BASE_URL)
 public class DefaultLobbyController implements LobbyController{
 
 	private final LobbyService lobbyService;
