@@ -35,4 +35,7 @@ public class LobbyRepositoryImpl implements LobbyRepository{
 		lobbyToDelete.ifPresent(lobby -> existingLobbies.remove(lobby));
 	}
 
+	public void clearLobbies() {
+		existingLobbies.clear();
+	}
 }

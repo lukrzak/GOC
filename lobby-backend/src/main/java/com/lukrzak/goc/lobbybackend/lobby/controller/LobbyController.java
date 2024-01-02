@@ -18,7 +18,7 @@ public interface LobbyController {
 	ResponseEntity<GetLobbiesResponse> getLobbies();
 
 	@PostMapping("/lobbies")
-	ResponseEntity<String> createLobby(CreateLobbyRequest createLobbyRequest);
+	ResponseEntity<String> createLobby(@RequestBody CreateLobbyRequest createLobbyRequest);
 
 	@PostMapping("/lobbies/join/{id}")
 	ResponseEntity<String> joinLobby(@RequestBody Player player, @PathVariable UUID id);

@@ -16,4 +16,6 @@ public interface LobbyRepository {
 
 	void deleteLobby(UUID id);
 
+	void clearLobbies();
+
 }
