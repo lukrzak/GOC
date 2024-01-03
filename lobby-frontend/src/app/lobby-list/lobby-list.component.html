@@ -1,13 +1,17 @@
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <div class="lobby-list">
     <div *ngFor="let lobby of lobbies" class="lobby-element">
-        <span class="lobby-value-left">ID: {{ lobby.id }}</span>
+        <span class="lobby-value-left" id="lobby-id">ID: {{ lobby.id }}</span>
         <span class="lobby-value-left" id="lobby-name">{{ lobby.name }}</span>
-        <span class="lobby-value-left">{{ lobby.numberOfPlayers }} / 4</span>
-        <span *ngIf="lobby.passwordProtected" class="lobby-value-left">
+        <span class="lobby-value-left" id="lobby-players">{{ lobby.numberOfPlayers }} / 4</span>
+        <button (click)="handleJoinButtonClick(lobby.id)" id="lobby-join-button">Join lobby</button>
+        <span *ngIf="lobby.passwordProtected; else elseBlock" id="lobby-password-protected">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
                 <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
             </svg>
         </span>
+        <ng-template #elseBlock>
+            <span id="empty-span"></span>
+        </ng-template>
     </div>
 </div>

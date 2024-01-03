@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Lobby } from './lobby';
+import { Lobbies } from './lobbies';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LobbyService {
 
-  lobbies: Lobby[] = [
-    {id: 1, name: "testLobby1", numberOfPlayers: 3, passwordProtected: false},
-    {id: 2, name: "testLobby2", numberOfPlayers: 0, passwordProtected: true}
-  ];
+  private lobbies: Lobby[] = [];
+  private LOBBIES_URI = "http://localhost:8080/api/v1/lobbies";
 
   constructor() { }
 
-  getLobbies(): Lobby[] {
-    return this.lobbies;
+  async getLobbies(): Promise<Lobbies> {
+    const result = await fetch(this.LOBBIES_URI);
+    return await result.json();
   }
 
-  getLobby(id: number): Lobby | undefined {
+  getLobby(id: string): Lobby | undefined {
     return this.lobbies.find(lobby => lobby.id === id);
   }
+  
 }

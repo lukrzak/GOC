@@ -4,14 +4,35 @@
     border-radius: 20px;
     height: 50px;
     margin-top: 0.5%;
-    width: 60%;
+    width: 80%;
     align-items: center;
 }
 
-.lobby-value-left {
+#lobby-id {
+    width: auto;
     margin-left: 2%;
 }
 
 #lobby-name {
-    width: 83%;
+    width: 50%;
+    margin-left: 2%;
 }
+
+#lobby-players {
+    margin-left: auto;
+}
+
+#lobby-password-protected {
+    margin-right: 2%;
+}
+
+#lobby-join-button {
+    margin-left: auto;
+    margin-right: 2%;
+}
+
+#empty-span {
+    width: 20px;
+    margin-right: 2%;
+}
+ 

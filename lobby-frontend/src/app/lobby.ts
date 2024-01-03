@@ -1,5 +1,5 @@
 export interface Lobby {
-  id: number,
+  id: string,
   name: string,
   numberOfPlayers: number,
   passwordProtected: boolean

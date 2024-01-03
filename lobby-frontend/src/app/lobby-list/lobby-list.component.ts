@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Lobby } from '../lobby';
 import { LobbyService } from '../lobby.service';
 import { NgFor, NgIf } from '@angular/common';
+import { Lobbies } from '../lobbies';
 
 @Component({
   selector: 'app-lobby-list',
@@ -16,6 +17,11 @@ export class LobbyListComponent {
   lobbies: Lobby[] = [];
 
   constructor() {
-    this.lobbies = this.service.getLobbies();
+    this.service.getLobbies().then((result: Lobbies) => this.lobbies = result.lobbies);
   }
+  
+  handleJoinButtonClick(id: string) {
+    console.log("Joining lobby: " + id);
+  }
+
 }
