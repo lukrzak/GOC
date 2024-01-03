@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { LobbyListComponent } from './lobby-list/lobby-list.component';
 import { HeaderComponent } from './header/header.component';
-import { HttpClient } from '@angular/common/http';
-import { LobbyService } from './lobby.service';
+import { LobbyViewComponent } from './lobby-view/lobby-view.component';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +12,8 @@ import { LobbyService } from './lobby.service';
     CommonModule, 
     RouterOutlet, 
     LobbyListComponent, 
-    HeaderComponent
+    HeaderComponent,
+    LobbyViewComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

@@ -23,6 +23,10 @@ export class LobbyService {
     return this.http.get<Lobbies>(this.LOBBIES_URI);
   }
 
+  getLobby(id: string): Lobby | undefined {
+    return this.lobbies.find(lobby => lobby.id === id);
+  }
+
   joinLobby(name: string, lobbyId: string): Observable<any> {
     const player: Player = {
       name: name
@@ -31,10 +35,6 @@ export class LobbyService {
     console.log("Sending join lobby request:" + requestUri);
 
     return this.http.post(requestUri, player, {responseType: 'text' as 'json'});
-  }
-
-  getLobby(id: string): Lobby | undefined {
-    return this.lobbies.find(lobby => lobby.id === id);
   }
 
 }
