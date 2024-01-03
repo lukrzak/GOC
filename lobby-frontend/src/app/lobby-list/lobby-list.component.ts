@@ -17,11 +17,20 @@ export class LobbyListComponent {
   lobbies: Lobby[] = [];
 
   constructor() {
-    this.service.getLobbies().then((result: Lobbies) => this.lobbies = result.lobbies);
+    this.service.getLobbies().subscribe((result: Lobbies) => 
+      this.lobbies = result.lobbies
+    );
   }
   
-  handleJoinButtonClick(id: string) {
-    console.log("Joining lobby: " + id);
+  handleJoinButtonClick(id: string, isPasswordProtected: boolean) {
+    let username = prompt("Enter username\nTODO: Replace with the form page");
+    let password;
+    if (isPasswordProtected) {
+      password = prompt("Enter lobby password\nTODO: Replace with the form page");
+    }
+    this.service.joinLobby(username!, id).subscribe(() =>
+      console.log(username)
+    );
   }
 
 }

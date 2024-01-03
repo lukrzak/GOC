@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { LobbyListComponent } from './lobby-list/lobby-list.component';
 import { HeaderComponent } from './header/header.component';
+import { HttpClient } from '@angular/common/http';
+import { LobbyService } from './lobby.service';
 
 @Component({
   selector: 'app-root',
