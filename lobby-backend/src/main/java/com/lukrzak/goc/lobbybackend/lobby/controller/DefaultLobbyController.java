@@ -2,6 +2,7 @@ package com.lukrzak.goc.lobbybackend.lobby.controller;
 
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbiesResponse;
+import com.lukrzak.goc.lobbybackend.lobby.dto.LobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.exception.LobbyDoesNotExist;
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
 import com.lukrzak.goc.lobbybackend.lobby.model.Lobby;
@@ -9,6 +10,7 @@ import com.lukrzak.goc.lobbybackend.lobby.service.LobbyService;
 import com.lukrzak.goc.lobbybackend.player.Player;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +19,7 @@ import java.util.UUID;
 
 import static com.lukrzak.goc.lobbybackend.LobbyBackendApplication.BASE_URL;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(BASE_URL)
 public class DefaultLobbyController implements LobbyController{
@@ -30,8 +33,16 @@ public class DefaultLobbyController implements LobbyController{
 	@Override
 	public ResponseEntity<GetLobbiesResponse> getLobbies() {
 		List<Lobby> lobbies = lobbyService.getLobbies();
+		List<LobbyResponse> response = lobbies.stream()
+				.map(l -> new LobbyResponse(
+						l.getId().toString(),
+						l.getName(),
+						l.isPasswordProtected(),
+						l.getPlayers().size())
+				)
+				.toList();
 
-		return new ResponseEntity<>(new GetLobbiesResponse(lobbies), HttpStatus.OK);
+		return new ResponseEntity<>(new GetLobbiesResponse(response), HttpStatus.OK);
 	}
 
 	@Override

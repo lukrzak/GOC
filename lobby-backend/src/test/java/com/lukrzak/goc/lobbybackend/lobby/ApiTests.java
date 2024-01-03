@@ -2,6 +2,7 @@ package com.lukrzak.goc.lobbybackend.lobby;
 
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbiesResponse;
+import com.lukrzak.goc.lobbybackend.lobby.dto.LobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
 import com.lukrzak.goc.lobbybackend.lobby.model.Lobby;
 import com.lukrzak.goc.lobbybackend.lobby.repository.LobbyRepository;
@@ -41,12 +42,20 @@ public class ApiTests {
 	void testGettingLobbies() {
 		final int LOBBIES_TO_GENERATE = 3;
 		List<Lobby> generatedLobbies = TestUtils.generateLobbies(LOBBIES_TO_GENERATE);
+		List<LobbyResponse> expectedResponse = generatedLobbies.stream()
+				.map(l -> new LobbyResponse(
+						l.getId().toString(),
+						l.getName(),
+						l.isPasswordProtected(),
+						l.getPlayers().size()
+				))
+				.toList();
 		generatedLobbies.forEach(lobbyRepository::addLobby);
 
 		GetLobbiesResponse response = (GetLobbiesResponse) sendGetRequest(LOBBIES_URL, GetLobbiesResponse.class, HttpStatus.OK);
 
 		assertEquals(LOBBIES_TO_GENERATE, response.lobbies().size());
-		assertEquals(generatedLobbies, response.lobbies());
+		assertEquals(expectedResponse, response.lobbies());
 	}
 
 	@Test

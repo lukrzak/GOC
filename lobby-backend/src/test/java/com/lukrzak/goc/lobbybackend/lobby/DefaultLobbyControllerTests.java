@@ -4,6 +4,7 @@ import com.lukrzak.goc.lobbybackend.lobby.controller.DefaultLobbyController;
 import com.lukrzak.goc.lobbybackend.lobby.controller.LobbyController;
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbiesResponse;
+import com.lukrzak.goc.lobbybackend.lobby.dto.LobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.exception.LobbyDoesNotExist;
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
 import com.lukrzak.goc.lobbybackend.lobby.model.Lobby;
@@ -32,6 +33,14 @@ public class DefaultLobbyControllerTests {
 	void testGettingLobbies() {
 		final int AMOUNT_OF_LOBBIES = 5;
 		List<Lobby> generatedLobbies = TestUtils.generateLobbies(AMOUNT_OF_LOBBIES);
+		List<LobbyResponse> lobbiesResponse = generatedLobbies.stream()
+				.map(l -> new LobbyResponse(
+						l.getId().toString(),
+						l.getName(),
+						l.isPasswordProtected(),
+						l.getPlayers().size()
+				))
+				.toList();
 		doReturn(generatedLobbies)
 				.when(lobbyService)
 				.getLobbies();
@@ -39,7 +48,7 @@ public class DefaultLobbyControllerTests {
 		ResponseEntity<GetLobbiesResponse> response = lobbyController.getLobbies();
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals(new GetLobbiesResponse(generatedLobbies), response.getBody());
+		assertEquals(new GetLobbiesResponse(lobbiesResponse), response.getBody());
 	}
 
 	@Test
