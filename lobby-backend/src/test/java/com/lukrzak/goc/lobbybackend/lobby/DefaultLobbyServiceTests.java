@@ -11,7 +11,6 @@ import com.lukrzak.goc.lobbybackend.lobby.service.LobbyService;
 import com.lukrzak.goc.lobbybackend.player.Player;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,6 +37,27 @@ public class DefaultLobbyServiceTests {
 		List<Lobby> result = lobbyService.getLobbies();
 
 		assertEquals(AMOUNT_OF_LOBBIES, result.size());
+	}
+
+	@Test
+	void testGettingLobby() throws LobbyDoesNotExist {
+		Lobby lobbyToReturn = new Lobby("test", false);
+		doReturn(Optional.of(lobbyToReturn))
+				.when(lobbyRepository)
+				.getLobby(any(UUID.class));
+
+		Lobby result = lobbyService.getLobby(UUID.randomUUID());
+
+		assertEquals(lobbyToReturn, result);
+	}
+
+	@Test
+	void testGettingNonExistingLobby() {
+		doReturn(Optional.empty())
+				.when(lobbyRepository)
+				.getLobby(any(UUID.class));
+
+		assertThrows(LobbyDoesNotExist.class, () -> lobbyService.getLobby(UUID.randomUUID()));
 	}
 
 	@Test

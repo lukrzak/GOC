@@ -1,6 +1,7 @@
 package com.lukrzak.goc.lobbybackend.lobby.service;
 
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
+import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.exception.LobbyDoesNotExist;
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
 import com.lukrzak.goc.lobbybackend.lobby.model.Lobby;
@@ -23,6 +24,12 @@ public class DefaultLobbyService implements LobbyService {
 	@Override
 	public List<Lobby> getLobbies() {
 		return lobbyRepository.getLobbies();
+	}
+
+	@Override
+	public Lobby getLobby(UUID id) throws LobbyDoesNotExist {
+		return lobbyRepository.getLobby(id)
+				.orElseThrow(() -> new LobbyDoesNotExist(id));
 	}
 
 	@Override

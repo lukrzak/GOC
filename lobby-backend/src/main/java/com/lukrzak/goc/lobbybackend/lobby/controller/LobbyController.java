@@ -2,6 +2,7 @@ package com.lukrzak.goc.lobbybackend.lobby.controller;
 
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbiesResponse;
+import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbyResponse;
 import com.lukrzak.goc.lobbybackend.player.Player;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,9 @@ public interface LobbyController {
 
 	@GetMapping("/lobbies")
 	ResponseEntity<GetLobbiesResponse> getLobbies();
+
+	@GetMapping("/lobbies/{id}")
+	ResponseEntity<GetLobbyResponse> getLobby(@PathVariable UUID id);
 
 	@PostMapping("/lobbies")
 	ResponseEntity<String> createLobby(@RequestBody CreateLobbyRequest createLobbyRequest);

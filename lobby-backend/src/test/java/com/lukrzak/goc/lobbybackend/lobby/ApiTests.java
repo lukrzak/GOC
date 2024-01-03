@@ -2,6 +2,7 @@ package com.lukrzak.goc.lobbybackend.lobby;
 
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbiesResponse;
+import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.dto.LobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
 import com.lukrzak.goc.lobbybackend.lobby.model.Lobby;
@@ -21,6 +22,7 @@ import java.util.UUID;
 import static com.lukrzak.goc.lobbybackend.LobbyBackendApplication.BASE_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @AutoConfigureWebTestClient
@@ -56,6 +58,31 @@ public class ApiTests {
 
 		assertEquals(LOBBIES_TO_GENERATE, response.lobbies().size());
 		assertEquals(expectedResponse, response.lobbies());
+	}
+
+	@Test
+	void testGettingLobby() throws TooManyPlayersInLobbyException {
+		Lobby lobby = new Lobby("lobby", false);
+		List<Player> players = List.of(new Player());
+		for(Player player : players) {
+			lobby.addPlayer(player);
+		}
+		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobby.getName(), lobby.getPlayers());
+		lobbyRepository.addLobby(lobby);
+		final String GET_LOBBY_URL = LOBBIES_URL + "/" + lobby.getId().toString();
+
+		GetLobbyResponse response = (GetLobbyResponse) sendGetRequest(GET_LOBBY_URL, GetLobbyResponse.class, HttpStatus.OK);
+
+		assertEquals(expectedResponse, response);
+	}
+
+	@Test
+	void testGettingNonExistingLobby() {
+		final String GET_LOBBY_URL = LOBBIES_URL + "/" + UUID.randomUUID();
+
+		GetLobbyResponse response = (GetLobbyResponse) sendGetRequest(GET_LOBBY_URL, GetLobbyResponse.class, HttpStatus.BAD_REQUEST);
+
+		assertNull(response);
 	}
 
 	@Test

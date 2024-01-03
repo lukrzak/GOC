@@ -4,6 +4,7 @@ import com.lukrzak.goc.lobbybackend.lobby.controller.DefaultLobbyController;
 import com.lukrzak.goc.lobbybackend.lobby.controller.LobbyController;
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbiesResponse;
+import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.dto.LobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.exception.LobbyDoesNotExist;
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
@@ -49,6 +50,35 @@ public class DefaultLobbyControllerTests {
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(new GetLobbiesResponse(lobbiesResponse), response.getBody());
+	}
+
+	@Test
+	void testGettingLobby() throws LobbyDoesNotExist, TooManyPlayersInLobbyException {
+		Lobby lobbyToReturn = new Lobby("test", false);
+		List<Player> players = List.of(new Player(), new Player());
+		for (Player player : players) {
+			lobbyToReturn.addPlayer(player);
+		}
+		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobbyToReturn.getName(), players);
+		doReturn(lobbyToReturn)
+				.when(lobbyService)
+				.getLobby(any(UUID.class));
+
+		ResponseEntity<GetLobbyResponse> response = lobbyController.getLobby(UUID.randomUUID());
+
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(expectedResponse, response.getBody());
+	}
+
+	@Test
+	void testGettingNonExistingLobby() throws LobbyDoesNotExist {
+		doThrow(LobbyDoesNotExist.class)
+				.when(lobbyService)
+				.getLobby(any(UUID.class));
+
+		ResponseEntity<GetLobbyResponse> response = lobbyController.getLobby(UUID.randomUUID());
+
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
 
 	@Test
