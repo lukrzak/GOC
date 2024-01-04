@@ -31,14 +31,14 @@ export class LobbyService {
     return this.http.get<LobbyDetails>(GET_LOBBY_URL);
   }
 
-  createLobby(lobbyName: string, passwordProtected: boolean): Observable<any> {
+  createLobby(lobbyName: string, passwordProtected: boolean): Observable<Lobby> {
     console.log("Sending create lobby request: " + this.LOBBIES_URL);
     const body = {
       name: lobbyName,
       passwordProtected: passwordProtected
     }
 
-    return this.http.post(this.LOBBIES_URL, body, {responseType: 'text' as 'json'});
+    return this.http.post<Lobby>(this.LOBBIES_URL, body);
   }
 
   joinLobby(playerName: string, lobbyId: string): Observable<any> {
