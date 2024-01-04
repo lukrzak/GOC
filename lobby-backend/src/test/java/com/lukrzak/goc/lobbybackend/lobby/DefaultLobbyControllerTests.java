@@ -86,12 +86,17 @@ public class DefaultLobbyControllerTests {
 	void testCreatingLobby() {
 		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby-name", true, new Player());
 		Lobby lobbyToReturn = new Lobby(createLobbyRequest.name(), createLobbyRequest.passwordProtected(), new Player());
-		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobbyToReturn.getName(), lobbyToReturn.getPlayers(), lobbyToReturn.getAdmin());
+		LobbyResponse expectedResponse = new LobbyResponse(
+				lobbyToReturn.getId().toString(),
+				lobbyToReturn.getName(),
+				lobbyToReturn.isPasswordProtected(),
+				lobbyToReturn.getPlayers().size()
+		);
 		doReturn(lobbyToReturn)
 				.when(lobbyService)
 				.createLobby(any(CreateLobbyRequest.class));
 
-		ResponseEntity<GetLobbyResponse> response = lobbyController.createLobby(createLobbyRequest);
+		ResponseEntity<LobbyResponse> response = lobbyController.createLobby(createLobbyRequest);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		assertEquals(expectedResponse, response.getBody());

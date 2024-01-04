@@ -3,6 +3,7 @@ package com.lukrzak.goc.lobbybackend.lobby.controller;
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbiesResponse;
 import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbyResponse;
+import com.lukrzak.goc.lobbybackend.lobby.dto.LobbyResponse;
 import com.lukrzak.goc.lobbybackend.player.Player;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +23,7 @@ public interface LobbyController {
 	ResponseEntity<GetLobbyResponse> getLobby(@PathVariable UUID id);
 
 	@PostMapping("/lobbies")
-	ResponseEntity<GetLobbyResponse> createLobby(@RequestBody CreateLobbyRequest createLobbyRequest);
+	ResponseEntity<LobbyResponse> createLobby(@RequestBody CreateLobbyRequest createLobbyRequest);
 
 	@PostMapping("/lobbies/join/{id}")
 	ResponseEntity<String> joinLobby(@RequestBody Player player, @PathVariable UUID id);

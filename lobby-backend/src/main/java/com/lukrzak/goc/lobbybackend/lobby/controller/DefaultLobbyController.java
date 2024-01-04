@@ -65,9 +65,9 @@ public class DefaultLobbyController implements LobbyController{
 	}
 
 	@Override
-	public ResponseEntity<GetLobbyResponse> createLobby(CreateLobbyRequest createLobbyRequest) {
+	public ResponseEntity<LobbyResponse> createLobby(CreateLobbyRequest createLobbyRequest) {
 		Lobby lobby = lobbyService.createLobby(createLobbyRequest);
-		GetLobbyResponse response = new GetLobbyResponse(lobby.getName(), lobby.getPlayers(), lobby.getAdmin());
+		LobbyResponse response = new LobbyResponse(lobby.getId().toString(), lobby.getName(), lobby.isPasswordProtected(), lobby.getPlayers().size());
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}

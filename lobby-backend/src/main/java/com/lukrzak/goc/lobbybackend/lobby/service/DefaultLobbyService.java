@@ -1,7 +1,6 @@
 package com.lukrzak.goc.lobbybackend.lobby.service;
 
 import com.lukrzak.goc.lobbybackend.lobby.dto.CreateLobbyRequest;
-import com.lukrzak.goc.lobbybackend.lobby.dto.GetLobbyResponse;
 import com.lukrzak.goc.lobbybackend.lobby.exception.LobbyDoesNotExist;
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
 import com.lukrzak.goc.lobbybackend.lobby.model.Lobby;

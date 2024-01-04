@@ -88,11 +88,12 @@ public class ApiTests {
 	@Test
 	void testCreatingLobby() {
 		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby-1", false, new Player());
-		GetLobbyResponse expectedResponse = new GetLobbyResponse(createLobbyRequest.name(), List.of(), createLobbyRequest.admin());
 
-		GetLobbyResponse response = (GetLobbyResponse) sendPostRequest(LOBBIES_URL, createLobbyRequest, HttpStatus.CREATED, GetLobbyResponse.class);
+		LobbyResponse response = (LobbyResponse) sendPostRequest(LOBBIES_URL, createLobbyRequest, HttpStatus.CREATED, LobbyResponse.class);
 
-		assertEquals(expectedResponse, response);
+		assertEquals(createLobbyRequest.name(), response.name());
+		assertEquals(createLobbyRequest.passwordProtected(), response.passwordProtected());
+		assertEquals(0, response.numberOfPlayers());
 		assertEquals(1, lobbyRepository.getLobbies().size());
 	}
 
