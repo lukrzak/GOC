@@ -4,7 +4,6 @@ import { LobbyService } from '../lobby.service';
 import { NgFor, NgIf } from '@angular/common';
 import { Lobbies } from '../lobbies';
 import { Router, RouterModule } from '@angular/router';
-import { error } from 'console';
 
 @Component({
   selector: 'app-lobby-list',
@@ -32,15 +31,7 @@ export class LobbyListComponent {
     if (isPasswordProtected) {
       password = prompt("Enter lobby password\nTODO: Replace with the form page");
     }
-
-    this.service.joinLobby(username!, id).subscribe({
-      next: () => {
-        this.router.navigate(["/lobby", id]);
-      },
-      error: () => {
-        alert("too many players in the lobby");
-      }
-    });
+    this.connectToLobby(username!, id);
   }
 
   createLobby() {
@@ -48,11 +39,22 @@ export class LobbyListComponent {
     const password = confirm("Enable password protection\nTODO: Replace with the form page");
 
     this.service.createLobby(name!, password).subscribe({
-      next: () => {
-        this.router.navigate(["/"]);
+      next: (response) => {
+        this.connectToLobby(localStorage.getItem("player")!, response.id);
       },
       error: () => {
         alert("Error while creating a lobby");
+      }
+    });
+  }
+
+  connectToLobby(username: string, id: string) {
+    this.service.joinLobby(username!, id).subscribe({
+      next: () => {
+        this.router.navigate(["/lobby", id]);
+      },
+      error: () => {
+        alert("too many players in the lobby");
       }
     });
   }
