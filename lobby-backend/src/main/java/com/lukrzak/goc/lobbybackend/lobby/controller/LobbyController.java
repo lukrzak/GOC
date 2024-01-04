@@ -22,7 +22,7 @@ public interface LobbyController {
 	ResponseEntity<GetLobbyResponse> getLobby(@PathVariable UUID id);
 
 	@PostMapping("/lobbies")
-	ResponseEntity<String> createLobby(@RequestBody CreateLobbyRequest createLobbyRequest);
+	ResponseEntity<GetLobbyResponse> createLobby(@RequestBody CreateLobbyRequest createLobbyRequest);
 
 	@PostMapping("/lobbies/join/{id}")
 	ResponseEntity<String> joinLobby(@RequestBody Player player, @PathVariable UUID id);

@@ -33,13 +33,15 @@ public class DefaultLobbyService implements LobbyService {
 	}
 
 	@Override
-	public void createLobby(CreateLobbyRequest createLobbyRequest) {
+	public Lobby createLobby(CreateLobbyRequest createLobbyRequest) {
 		Lobby newLobby = new Lobby(
 				createLobbyRequest.name(),
-				createLobbyRequest.passwordProtected()
+				createLobbyRequest.passwordProtected(),
+				createLobbyRequest.admin()
 		);
 
 		lobbyRepository.addLobby(newLobby);
+		return newLobby;
 	}
 
 	@Override

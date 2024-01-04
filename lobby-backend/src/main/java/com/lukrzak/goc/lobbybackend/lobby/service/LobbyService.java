@@ -17,7 +17,7 @@ public interface LobbyService {
 
 	Lobby getLobby(UUID id) throws LobbyDoesNotExist;
 
-	void createLobby(CreateLobbyRequest createLobbyRequest);
+	Lobby createLobby(CreateLobbyRequest createLobbyRequest);
 
 	void joinLobby(@RequestBody Player player, @PathVariable UUID id) throws TooManyPlayersInLobbyException, LobbyDoesNotExist;
 

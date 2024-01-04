@@ -12,7 +12,7 @@ public class ModelTests {
 
 	@Test
 	void testAddingPlayer() throws TooManyPlayersInLobbyException {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 
 		lobby.addPlayer(new Player());
 
@@ -21,7 +21,7 @@ public class ModelTests {
 
 	@Test
 	void testAddingTooManyPlayers() throws TooManyPlayersInLobbyException {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 		final int MAX_PLAYERS_IN_LOBBY = 4;
 
 		for (int i = 0; i < MAX_PLAYERS_IN_LOBBY; i++) {
@@ -33,7 +33,7 @@ public class ModelTests {
 
 	@Test
 	void testRemovingPlayer() throws TooManyPlayersInLobbyException {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 		Player player = new Player("test");
 		Player otherPlayer = new Player("other-player");
 
@@ -47,7 +47,7 @@ public class ModelTests {
 
 	@Test
 	void testRemovingNonExistingPlayer() {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 
 		lobby.removePlayer(new Player("test"));
 

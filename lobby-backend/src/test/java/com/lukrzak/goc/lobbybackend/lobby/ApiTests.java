@@ -62,12 +62,12 @@ public class ApiTests {
 
 	@Test
 	void testGettingLobby() throws TooManyPlayersInLobbyException {
-		Lobby lobby = new Lobby("lobby", false);
+		Lobby lobby = new Lobby("lobby", false, new Player());
 		List<Player> players = List.of(new Player());
 		for(Player player : players) {
 			lobby.addPlayer(player);
 		}
-		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobby.getName(), lobby.getPlayers());
+		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobby.getName(), lobby.getPlayers(), lobby.getAdmin());
 		lobbyRepository.addLobby(lobby);
 		final String GET_LOBBY_URL = LOBBIES_URL + "/" + lobby.getId().toString();
 
@@ -87,23 +87,23 @@ public class ApiTests {
 
 	@Test
 	void testCreatingLobby() {
-		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby-1", false);
-		final int LOBBIES_TO_GENERATE = 3;
+		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby-1", false, new Player());
+		GetLobbyResponse expectedResponse = new GetLobbyResponse(createLobbyRequest.name(), List.of(), createLobbyRequest.admin());
 
-		TestUtils.generateLobbies(LOBBIES_TO_GENERATE)
-				.forEach(l -> sendPostRequest(LOBBIES_URL, createLobbyRequest, HttpStatus.CREATED));
+		GetLobbyResponse response = (GetLobbyResponse) sendPostRequest(LOBBIES_URL, createLobbyRequest, HttpStatus.CREATED, GetLobbyResponse.class);
 
-		assertEquals(LOBBIES_TO_GENERATE, lobbyRepository.getLobbies().size());
+		assertEquals(expectedResponse, response);
+		assertEquals(1, lobbyRepository.getLobbies().size());
 	}
 
 	@Test
 	void testJoiningToLobby() {
 		Player player = new Player("playerName");
-		Lobby existingLobby = new Lobby("lobby-1", true);
+		Lobby existingLobby = new Lobby("lobby-1", true, new Player());
 		final String JOIN_LOBBY_URI = LOBBIES_URL + "/join/" + existingLobby.getId().toString();
 		lobbyRepository.addLobby(existingLobby);
 
-		String response = sendPostRequest(JOIN_LOBBY_URI, player, HttpStatus.OK);
+		String response = (String) sendPostRequest(JOIN_LOBBY_URI, player, HttpStatus.OK, String.class);
 
 		assertTrue(existingLobby.getPlayers().contains(player));
 		assertEquals(1, existingLobby.getPlayers().size());
@@ -113,12 +113,12 @@ public class ApiTests {
 	@Test
 	void testLeavingLobby() throws TooManyPlayersInLobbyException {
 		Player player = new Player("playerName");
-		Lobby existingLobby = new Lobby("lobby-1", true);
+		Lobby existingLobby = new Lobby("lobby-1", true, new Player());
 		existingLobby.addPlayer(player);
 		final String LEAVE_LOBBY_URI = LOBBIES_URL + "/leave/" + existingLobby.getId().toString();
 		lobbyRepository.addLobby(existingLobby);
 
-		String response = sendPostRequest(LEAVE_LOBBY_URI, player, HttpStatus.OK);
+		String response = (String) sendPostRequest(LEAVE_LOBBY_URI, player, HttpStatus.OK, String.class);
 
 		assertEquals(0, existingLobby.getPlayers().size());
 		assertEquals("Left lobby " + existingLobby.getId().toString(), response);
@@ -126,7 +126,7 @@ public class ApiTests {
 
 	@Test
 	void testJoiningByTooManyPlayers() throws TooManyPlayersInLobbyException {
-		Lobby lobby = new Lobby("lobby", false);
+		Lobby lobby = new Lobby("lobby", false, new Player());
 		final int MAX_PLAYERS_IN_LOBBY = 4;
 		final String JOIN_LOBBY_URI = LOBBIES_URL + "/join/" + lobby.getId().toString();
 		Player exceedingPlayer = new Player("player");
@@ -135,7 +135,7 @@ public class ApiTests {
 			lobby.addPlayer(new Player("player-" + i));
 		}
 
-		String response = sendPostRequest(JOIN_LOBBY_URI, exceedingPlayer, HttpStatus.BAD_REQUEST);
+		String response = (String) sendPostRequest(JOIN_LOBBY_URI, exceedingPlayer, HttpStatus.BAD_REQUEST, String.class);
 
 		assertEquals("Too many players in the lobby " + lobby.getName() + ". Cannot join", response);
 	}
@@ -147,8 +147,8 @@ public class ApiTests {
 		final String JOIN_LOBBY_URI = LOBBIES_URL + "/join/" + incorrectLobbyId;
 		final String LEAVE_LOBBY_URI = LOBBIES_URL + "/leave/" + incorrectLobbyId;
 
-		String responseOnJoin = sendPostRequest(JOIN_LOBBY_URI, player, HttpStatus.BAD_REQUEST);
-		String responseOnLeave = sendPostRequest(LEAVE_LOBBY_URI, player, HttpStatus.BAD_REQUEST);
+		String responseOnJoin = (String) sendPostRequest(JOIN_LOBBY_URI, player, HttpStatus.BAD_REQUEST, String.class);
+		String responseOnLeave = (String) sendPostRequest(LEAVE_LOBBY_URI, player, HttpStatus.BAD_REQUEST, String.class);
 
 		assertEquals("Lobby with id: " + incorrectLobbyId + " does not exist", responseOnJoin);
 		assertEquals("Lobby with id: " + incorrectLobbyId + " does not exist", responseOnLeave);
@@ -157,18 +157,18 @@ public class ApiTests {
 	@Test
 	void testLeavingLobbyByNonParticipant() {
 		Player playerWithoutLobby = new Player("player");
-		Lobby lobby = new Lobby("lobby", false);
+		Lobby lobby = new Lobby("lobby", false, new Player());
 		final String LEAVE_LOBBY_URI = LOBBIES_URL + "/leave/" + lobby.getId().toString();
 		lobbyRepository.addLobby(lobby);
 
-		String response = sendPostRequest(LEAVE_LOBBY_URI, playerWithoutLobby, HttpStatus.OK);
+		String response = (String) sendPostRequest(LEAVE_LOBBY_URI, playerWithoutLobby, HttpStatus.OK, String.class);
 
 		assertEquals("Left lobby " + lobby.getId().toString(), response);
 	}
 
 	@Test
 	void testDeletingLobby() {
-		Lobby lobby = new Lobby("lobby", false);
+		Lobby lobby = new Lobby("lobby", false, new Player());
 		final String DELETE_LOBBY_URI = LOBBIES_URL + "/" + lobby.getId().toString();
 		lobbyRepository.addLobby(lobby);
 
@@ -189,14 +189,14 @@ public class ApiTests {
 		assertEquals("Deleted lobby " + incorrectLobbyId, response);
 	}
 
-	private String sendPostRequest(String uri, Object body, HttpStatus expectedStatus) {
+	private Object sendPostRequest(String uri, Object body, HttpStatus expectedStatus, Class<?> expectedBodyType) {
 		return webTestClient.post()
 				.uri(uri)
 				.bodyValue(body)
 				.exchange()
 				.expectStatus()
 				.isEqualTo(expectedStatus)
-				.expectBody(String.class)
+				.expectBody(expectedBodyType)
 				.returnResult()
 				.getResponseBody();
 	}

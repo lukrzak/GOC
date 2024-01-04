@@ -1,4 +1,6 @@
 package com.lukrzak.goc.lobbybackend.lobby.dto;
 
-public record CreateLobbyRequest(String name, boolean passwordProtected) {
+import com.lukrzak.goc.lobbybackend.player.Player;
+
+public record CreateLobbyRequest(String name, boolean passwordProtected, Player admin) {
 }

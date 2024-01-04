@@ -55,7 +55,7 @@ public class DefaultLobbyController implements LobbyController{
 		GetLobbyResponse response;
 		try {
 			Lobby lobby = lobbyService.getLobby(id);
-			response = new GetLobbyResponse(lobby.getName(), lobby.getPlayers());
+			response = new GetLobbyResponse(lobby.getName(), lobby.getPlayers(), lobby.getAdmin());
 		}
 		catch (LobbyDoesNotExist e){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -65,10 +65,11 @@ public class DefaultLobbyController implements LobbyController{
 	}
 
 	@Override
-	public ResponseEntity<String> createLobby(CreateLobbyRequest createLobbyRequest) {
-		lobbyService.createLobby(createLobbyRequest);
+	public ResponseEntity<GetLobbyResponse> createLobby(CreateLobbyRequest createLobbyRequest) {
+		Lobby lobby = lobbyService.createLobby(createLobbyRequest);
+		GetLobbyResponse response = new GetLobbyResponse(lobby.getName(), lobby.getPlayers(), lobby.getAdmin());
 
-		return new ResponseEntity<>("Lobby " + createLobbyRequest.name() + "created successfully", plainTextHeader, HttpStatus.CREATED);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@Override

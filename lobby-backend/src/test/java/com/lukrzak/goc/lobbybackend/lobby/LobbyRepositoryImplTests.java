@@ -3,6 +3,7 @@ package com.lukrzak.goc.lobbybackend.lobby;
 import com.lukrzak.goc.lobbybackend.lobby.model.Lobby;
 import com.lukrzak.goc.lobbybackend.lobby.repository.LobbyRepository;
 import com.lukrzak.goc.lobbybackend.lobby.repository.LobbyRepositoryImpl;
+import com.lukrzak.goc.lobbybackend.player.Player;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -16,8 +17,8 @@ public class LobbyRepositoryImplTests {
 	void testAddingLobby() {
 		LobbyRepository lobbyRepository = new LobbyRepositoryImpl();
 
-		lobbyRepository.addLobby(new Lobby("lobby-1", true));
-		lobbyRepository.addLobby(new Lobby("lobby-2", true));
+		lobbyRepository.addLobby(new Lobby("lobby-1", true, new Player()));
+		lobbyRepository.addLobby(new Lobby("lobby-2", true, new Player()));
 
 		assertEquals(2, lobbyRepository.getLobbies().size());
 	}
@@ -25,11 +26,11 @@ public class LobbyRepositoryImplTests {
 	@Test
 	void testGettingLobby() {
 		LobbyRepository lobbyRepository = new LobbyRepositoryImpl();
-		Lobby lobbyToCompare = new Lobby("lobby-2", true);
+		Lobby lobbyToCompare = new Lobby("lobby-2", true, new Player());
 
-		lobbyRepository.addLobby(new Lobby("lobby-1", true));
+		lobbyRepository.addLobby(new Lobby("lobby-1", true, new Player()));
 		lobbyRepository.addLobby(lobbyToCompare);
-		lobbyRepository.addLobby(new Lobby("lobby-3", true));
+		lobbyRepository.addLobby(new Lobby("lobby-3", true, new Player()));
 
 		assertEquals(lobbyToCompare, lobbyRepository.getLobby(lobbyToCompare.getId()).get());
 	}
@@ -38,7 +39,7 @@ public class LobbyRepositoryImplTests {
 	void testGettingNonExistingLobby() {
 		LobbyRepository lobbyRepository = new LobbyRepositoryImpl();
 
-		lobbyRepository.addLobby(new Lobby("lobby-1", true));
+		lobbyRepository.addLobby(new Lobby("lobby-1", true, new Player()));
 
 		assertEquals(Optional.empty(), lobbyRepository.getLobby(UUID.randomUUID()));
 	}
@@ -46,9 +47,9 @@ public class LobbyRepositoryImplTests {
 	@Test
 	void testDeletingLobby() {
 		LobbyRepository lobbyRepository = new LobbyRepositoryImpl();
-		Lobby lobby = new Lobby("lobby-1", true);
+		Lobby lobby = new Lobby("lobby-1", true, new Player());
 		lobbyRepository.addLobby(lobby);
-		lobbyRepository.addLobby(new Lobby("lobby-2", true));
+		lobbyRepository.addLobby(new Lobby("lobby-2", true, new Player()));
 
 		lobbyRepository.deleteLobby(lobby.getId());
 
@@ -58,8 +59,8 @@ public class LobbyRepositoryImplTests {
 	@Test
 	void testDeletingNonExistingLobby() {
 		LobbyRepository lobbyRepository = new LobbyRepositoryImpl();
-		lobbyRepository.addLobby(new Lobby("lobby-1", true));
-		lobbyRepository.addLobby(new Lobby("lobby-2", false));
+		lobbyRepository.addLobby(new Lobby("lobby-1", true, new Player()));
+		lobbyRepository.addLobby(new Lobby("lobby-2", false, new Player()));
 
 		lobbyRepository.deleteLobby(UUID.randomUUID());
 

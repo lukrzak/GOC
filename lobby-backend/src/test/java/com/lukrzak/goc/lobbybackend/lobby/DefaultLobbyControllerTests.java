@@ -54,12 +54,13 @@ public class DefaultLobbyControllerTests {
 
 	@Test
 	void testGettingLobby() throws LobbyDoesNotExist, TooManyPlayersInLobbyException {
-		Lobby lobbyToReturn = new Lobby("test", false);
+		Player admin = new Player();
+		Lobby lobbyToReturn = new Lobby("test", false, admin);
 		List<Player> players = List.of(new Player(), new Player());
 		for (Player player : players) {
 			lobbyToReturn.addPlayer(player);
 		}
-		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobbyToReturn.getName(), players);
+		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobbyToReturn.getName(), players, admin);
 		doReturn(lobbyToReturn)
 				.when(lobbyService)
 				.getLobby(any(UUID.class));
@@ -83,14 +84,17 @@ public class DefaultLobbyControllerTests {
 
 	@Test
 	void testCreatingLobby() {
-		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby-name", true);
-		doNothing()
+		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby-name", true, new Player());
+		Lobby lobbyToReturn = new Lobby(createLobbyRequest.name(), createLobbyRequest.passwordProtected(), new Player());
+		GetLobbyResponse expectedResponse = new GetLobbyResponse(lobbyToReturn.getName(), lobbyToReturn.getPlayers(), lobbyToReturn.getAdmin());
+		doReturn(lobbyToReturn)
 				.when(lobbyService)
 				.createLobby(any(CreateLobbyRequest.class));
 
-		ResponseEntity<String> response = lobbyController.createLobby(createLobbyRequest);
+		ResponseEntity<GetLobbyResponse> response = lobbyController.createLobby(createLobbyRequest);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		assertEquals(expectedResponse, response.getBody());
 	}
 
 	@Test

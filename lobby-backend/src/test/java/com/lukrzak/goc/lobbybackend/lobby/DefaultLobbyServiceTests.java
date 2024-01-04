@@ -41,7 +41,7 @@ public class DefaultLobbyServiceTests {
 
 	@Test
 	void testGettingLobby() throws LobbyDoesNotExist {
-		Lobby lobbyToReturn = new Lobby("test", false);
+		Lobby lobbyToReturn = new Lobby("test", false, new Player());
 		doReturn(Optional.of(lobbyToReturn))
 				.when(lobbyRepository)
 				.getLobby(any(UUID.class));
@@ -65,14 +65,14 @@ public class DefaultLobbyServiceTests {
 		doNothing()
 				.when(lobbyRepository)
 				.addLobby(any(Lobby.class));
-		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby", true);
+		CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("lobby", true, new Player());
 
 		lobbyService.createLobby(createLobbyRequest);
 	}
 
 	@Test
 	void testJoiningLobby() throws LobbyDoesNotExist, TooManyPlayersInLobbyException {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 		Player player = new Player();
 		doReturn(Optional.of(lobby))
 				.when(lobbyRepository)
@@ -92,7 +92,7 @@ public class DefaultLobbyServiceTests {
 
 	@Test
 	void testLeavingLobby() throws LobbyDoesNotExist {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 		Player player = new Player();
 		doReturn(Optional.of(lobby))
 				.when(lobbyRepository)
@@ -103,7 +103,7 @@ public class DefaultLobbyServiceTests {
 
 	@Test
 	void testLeavingNonExistingLobby() {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 		Player player = new Player();
 		doReturn(Optional.empty())
 				.when(lobbyRepository)
@@ -114,7 +114,7 @@ public class DefaultLobbyServiceTests {
 
 	@Test
 	void testDeletingLobby() {
-		Lobby lobby = new Lobby("test", true);
+		Lobby lobby = new Lobby("test", true, new Player());
 		doNothing()
 				.when(lobbyRepository)
 				.deleteLobby(any(UUID.class));

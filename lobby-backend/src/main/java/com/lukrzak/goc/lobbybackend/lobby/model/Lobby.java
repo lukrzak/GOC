@@ -2,7 +2,6 @@ package com.lukrzak.goc.lobbybackend.lobby.model;
 
 import com.lukrzak.goc.lobbybackend.lobby.exception.TooManyPlayersInLobbyException;
 import com.lukrzak.goc.lobbybackend.player.Player;
-import jakarta.transaction.Transactional;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +19,13 @@ public class Lobby {
 	private final String name;
 	private final boolean passwordProtected;
 	private final List<Player> players = new ArrayList<>();
+	private final Player admin;
 
-	public Lobby(String name, boolean passwordProtected) {
+	public Lobby(String name, boolean passwordProtected, Player admin) {
 		this.id = UUID.randomUUID();
 		this.name = name;
 		this.passwordProtected = passwordProtected;
+		this.admin = admin;
 	}
 
 	public void addPlayer(Player player) throws TooManyPlayersInLobbyException {
