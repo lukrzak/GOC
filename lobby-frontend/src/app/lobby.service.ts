@@ -31,11 +31,12 @@ export class LobbyService {
     return this.http.get<LobbyDetails>(GET_LOBBY_URL);
   }
 
-  createLobby(lobbyName: string, passwordProtected: boolean): Observable<Lobby> {
+  createLobby(lobbyName: string, passwordProtected: boolean, username: string): Observable<Lobby> {
     console.log("Sending create lobby request: " + this.LOBBIES_URL);
     const body = {
       name: lobbyName,
-      passwordProtected: passwordProtected
+      passwordProtected: passwordProtected,
+      admin: username
     }
 
     return this.http.post<Lobby>(this.LOBBIES_URL, body);

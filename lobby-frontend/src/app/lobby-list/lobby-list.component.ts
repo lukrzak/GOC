@@ -37,10 +37,12 @@ export class LobbyListComponent {
   createLobby() {
     const name = prompt("Enter lobby name\nTODO: Replace with the form page");
     const password = confirm("Enable password protection\nTODO: Replace with the form page");
+    const username = prompt("Enter username\nTODO: Replace with the form page");
+    localStorage.setItem("player", username!);
 
-    this.service.createLobby(name!, password).subscribe({
+    this.service.createLobby(name!, password, username!).subscribe({
       next: (response) => {
-        this.connectToLobby(localStorage.getItem("player")!, response.id);
+        this.connectToLobby(username!, response.id);
       },
       error: () => {
         alert("Error while creating a lobby");
