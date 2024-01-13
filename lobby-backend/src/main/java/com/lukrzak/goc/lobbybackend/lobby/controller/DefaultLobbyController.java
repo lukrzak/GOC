@@ -22,7 +22,7 @@ import java.util.UUID;
 
 import static com.lukrzak.goc.lobbybackend.LobbyBackendApplication.BASE_URL;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${LOBBY_FRONTEND_URL}")
 @RestController
 @RequestMapping(BASE_URL)
 public class DefaultLobbyController implements LobbyController{
