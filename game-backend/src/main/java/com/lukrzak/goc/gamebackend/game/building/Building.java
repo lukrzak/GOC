@@ -1,8 +1,8 @@
 package com.lukrzak.goc.gamebackend.game.building;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Building {
 
 	private String name;

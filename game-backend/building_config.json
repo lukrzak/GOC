@@ -1,0 +1,250 @@
+{
+    "buildingCost": {
+        "MINE": {
+            "fundsChange": -300.0,
+            "populationChange": -20,
+            "electricityChange": -5.0,
+            "daysToBuild": 50,
+            "resourcesChange": {
+                "OIL": 1.0,
+                "RARE_MINERALS": 0.25,
+                "MINE_RAW_MINERALS": 3.5,
+                "BUILDING_MATERIALS": 0.10,
+                "WATER": -0.25,
+                "PETROL": -2.0,
+                "VEHICLES": -0.5,
+                "CLOTHES": -0.25
+            },
+            "cost": {
+                "funds": 10000.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 5.0,
+                    "VEHICLES": 10.0,
+                    "CLOTHES": 5.0
+                }
+            }
+        },
+        "FARM": {
+            "fundsChange": -100.0,
+            "populationChange": 5,
+            "electricityChange": -1.5,
+            "daysToBuild": 20,
+            "resourcesChange": {
+                "FOOD": 3.0,
+                "WOOD": 1.0,
+                "WATER": -1.0,
+                "CLOTHES": -0.25,
+                "PETROL": -0.25,
+                "BUILDING_MATERIALS": 0.25
+            },
+            "cost": {
+                "funds": 2500.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 1.0,
+                    "VEHICLES": 2.0,
+                    "FURNITURE": 1.0,
+                    "GLASS": 1.0
+                }
+            }
+        },
+        "WATER_PUMP": {
+            "fundsChange": -75.0,
+            "populationChange": -1,
+            "electricityChange": -1.25,
+            "daysToBuild": 24,
+            "resourcesChange": {
+                "WATER": 5.0,
+                "PETROL": -0.25
+            },
+            "cost": {
+                "funds": 2500.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 1.5,
+                    "METAL": 2.0
+                }
+            }
+        },
+        "WIND_POWER_PLANT": {
+            "fundsChange": -140.0,
+            "populationChange": -2,
+            "electricityChange": 25.0,
+            "daysToBuild": 35,
+            "resourceChange": {},
+            "cost": {
+                "funds": 4000.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 2.0,
+                    "METAL": 3.0
+                }
+            }
+        },
+        "COAL_POWER_PLANT": {
+            "fundsChange": -180.0,
+            "populationChange": -10,
+            "electricityChange": 40.0,
+            "daysToBuild": 62,
+            "resourceChange": {
+                "MINE_RAW_MATERIALS": -1.75,
+                "WOOD": -0.5,
+                "OIL": -0.1,
+                "PETROL": -0.2,
+                "VEHICLES": -0.2
+            },
+            "cost": {
+                "funds": 6500.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 3.0,
+                    "METAL": 2.0
+                }
+            }
+        },
+        "NUCLEAR_POWER_PLANT": {
+            "fundsChange": -500.0,
+            "populationChange": -15,
+            "electricityChange": 125.0,
+            "daysToBuild": 90,
+            "resourceChange": {
+                "RARE_MINERALS": -1.0,
+                "WATER": -6.0,
+                "BUILDING_MATERIALS": -0.25,
+                "PLASTIC": -0.25,
+                "CLOTHES": -0.10,
+                "VEHICLES": -0.25,
+                "FURNITURE": -0.10,
+                "PETROL": -0.10
+            },
+            "cost": {
+                "funds": 10000.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 7.5,
+                    "METAL": 4.0,
+                    "GLASS": 4.0,
+                    "PLASTIC": 2.0,
+                    "VEHICLES": 3.0,
+                    "FURNITURE": 2.5
+                }
+            }
+        },
+        "REFINERY": {
+            "fundsChange": -180.0,
+            "populationChange": -8,
+            "electricityChange": -5.0,
+            "daysToBuild": 50,
+            "resourceChange": {
+                "OIL": -2.5,
+                "MINE_RAW_MINERALS": -0.25,
+                "PETROL": 2.0,
+                "GLASS": 1.0,
+                "PLASTIC": 1.0
+            },
+            "cost": {
+                "funds": 5000.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 3.5,
+                    "METAL": 5.0,
+                    "VEHICLES": 1.0
+                }
+            }
+        },
+        "ASSEMBLY": {
+            "fundsChange": -160.0,
+            "populationChange": -6,
+            "electricityChange": -4.0,
+            "daysToBuild": 60,
+            "resourceChange": {
+                "VEHICLES": 1.5,
+                "MINE_RAW_MATERIALS": -1.0,
+                "METAL": -1.0,
+                "GLASS": -0.5,
+                "PETROL": -0.25
+            },
+            "cost": {
+                "funds": 5000.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 3.5,
+                    "METAL": 5.0,
+                    "VEHICLES": 1.0
+                }
+            }
+        },
+        "OIL_PUMP": {
+            "fundsChange": -100.0,
+            "populationChange": -1,
+            "electricityChange": -8.0,
+            "daysToBuild": 30,
+            "resourceChange": {
+                "OIL": 2.5,
+                "MINE_RAW_MINERALS": 0.5
+            },
+            "cost": {
+                "funds": 7500.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 3.0,
+                    "METAL": 3.0,
+                    "PLASTIC": 2.0
+                }
+            }
+        },
+        "SAWMILL": {
+            "fundsChange": -100.0,
+            "populationChange": -3,
+            "electricityChange": -3.0,
+            "daysToBuild": 24,
+            "resourceChange": {
+                "WOOD": 2.0,
+                "FURNITURE": 0.5,
+                "BUILDING_MATERIALS": 4.0,
+                "PETROL": -0.10
+            },
+            "cost": {
+                "funds": 3250.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 1.0,
+                    "METAL": 0.5,
+                    "CLOTHES": 0.5
+                }
+            }
+        },
+        "IRONWORKS": {
+            "fundsChange": -225.0,
+            "populationChange": -3,
+            "electricityChange": -5.0,
+            "daysToBuild": 45,
+            "resourceChange": {
+                "WOOD": -0.1,
+                "RARE_MINERALS": -0.1,
+                "MINE_RAW_MINERALS": -1.0,
+                "GLASS": 0.5,
+                "METAL": 4.0
+            },
+            "cost": {
+                "funds": 3250.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 2.5,
+                    "VEHICLES": 1.0
+                }
+            }
+        },
+        "MANUFACTURE":{
+            "fundsChange": -150.0,
+            "populationChange": 0,
+            "electricityChange": -4.0,
+            "daysToBuild": 30,
+            "resourceChange": {
+                "FABRIC": -0.5,
+                "WATER": -0.5,
+                "MINE_RAW_MINERALS": -0.1,
+                "PLASTIC": -0.1,
+                "CLOTHES": 2.0
+            },
+            "cost": {
+                "funds": 2800.0,
+                "resources": {
+                    "BUILDING_MATERIALS": 3.0,
+                    "METAL": 1.5,
+                    "FURNITURE": 2.0
+                }
+            }
+        }
+    }
+}

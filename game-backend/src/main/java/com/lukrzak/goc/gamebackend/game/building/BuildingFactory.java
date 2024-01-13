@@ -22,7 +22,8 @@ public class BuildingFactory {
 			throw new RuntimeException("File " + BUILDING_CONFIG_FILE + " is missing");
 		}
 
-		return new Building(buildingEffect);
+		String buildingName = prettifyBuildingName(type);
+		return new Building(buildingName, buildingEffect);
 	}
 
 	private static BuildingEffect getBuildingEffect(BuildingTypes type) throws IOException {
@@ -51,4 +52,11 @@ public class BuildingFactory {
 		return new BuildingEffect(fundsChange, populationChange, resourcesChange);
 	}
 
+	private static String prettifyBuildingName(BuildingTypes type) {
+		return type.toString()
+				.replace("_", " ")
+				.toLowerCase()
+				.substring(0, 1)
+				.toUpperCase();
+	}
 }
