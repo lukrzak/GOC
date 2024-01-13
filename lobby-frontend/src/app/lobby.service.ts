@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Player } from './player';
 import { LobbyDetails } from './lobby-details';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { LobbyDetails } from './lobby-details';
 export class LobbyService {
 
   private http: HttpClient;
-  private LOBBIES_URL = "http://localhost:8080/api/v1/lobbies";
+  private LOBBIES_URL = environment.LOBBY_BACKEND_URL;
 
   constructor(http: HttpClient) {
     this.http = http;
@@ -20,7 +21,6 @@ export class LobbyService {
 
   getLobbies(): Observable<Lobbies> {
     console.log("Sending get lobbies request: " + this.LOBBIES_URL);
-
     return this.http.get<Lobbies>(this.LOBBIES_URL);
   }
 
