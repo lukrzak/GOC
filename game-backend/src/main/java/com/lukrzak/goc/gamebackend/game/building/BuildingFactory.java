@@ -45,7 +45,7 @@ public class BuildingFactory {
 		while(elements.hasNext()) {
 			Map.Entry<String, JsonNode> entry = elements.next();
 			Resources resource = Resources.valueOf(entry.getKey());
-			float amount = entry.getValue().asInt();
+			float amount = entry.getValue().floatValue();
 			resourcesChange.put(resource, amount);
 		}
 
@@ -54,9 +54,10 @@ public class BuildingFactory {
 
 	private static String prettifyBuildingName(BuildingTypes type) {
 		return type.toString()
+				.charAt(0)
+				+ type.toString()
+				.substring(1)
 				.replace("_", " ")
-				.toLowerCase()
-				.substring(0, 1)
-				.toUpperCase();
+				.toLowerCase();
 	}
 }
