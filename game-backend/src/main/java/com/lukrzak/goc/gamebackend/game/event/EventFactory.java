@@ -38,7 +38,7 @@ public class EventFactory {
 		Building buildingOnFinish = BuildingFactory.createBuilding(type);
 
 		Runnable onStart = () -> region.getCountry().consumeResources(fundsToConsume, resourcesToConsume);
-		Runnable onFinish = () -> region.addBuilding(buildingOnFinish);
+		Runnable onFinish = () -> region.finishBuilding(buildingOnFinish);
 
 		return new Event(onStart, onFinish, currentTime + timeToFinish);
 	}
