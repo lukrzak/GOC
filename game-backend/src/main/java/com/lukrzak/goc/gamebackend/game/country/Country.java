@@ -1,5 +1,6 @@
 package com.lukrzak.goc.gamebackend.game.country;
 
+import com.lukrzak.goc.gamebackend.game.GameUtils;
 import com.lukrzak.goc.gamebackend.game.building.Building;
 import com.lukrzak.goc.gamebackend.game.building.BuildingEffect;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Country {
 	private float taxRate;
 	private final List<Region> regions = new ArrayList<>();
 	private final EnumMap<Resources, Float> resources = new EnumMap<>(Resources.class);
-	private EnumMap<Resources, Float> resourcesChange = getInitialResourceMap();
+	private EnumMap<Resources, Float> resourcesChange = GameUtils.getDefaultResourcesMap();
 
 	public Country(int id, String name, float startingFunds) {
 		this.id = id;
@@ -41,30 +42,32 @@ public class Country {
 
 	public void update() {
 		funds += fundsChange;
-		for (Resources resource: Resources.values()) {
-			float updatedResourceAmount = resources.get(resource) + resourcesChange.get(resource);
-			resources.put(resource, updatedResourceAmount);
-		}
+		resourcesChange.forEach((k, v) -> resources.merge(k, v, Float::sum));
 
 		int totalPopulation = 0;
 		for (Region region: regions) {
-			int regionNewPopulation = region.getPopulationChange() + region.getPopulation();
+			int regionNewPopulation = (int) (Math.floor(region.getPopulationChange()) + region.getPopulation());
 			region.setPopulation(regionNewPopulation);
 			totalPopulation += regionNewPopulation;
 		}
 		funds += totalPopulation * taxRate;
 	}
 
-	public void consumeResources(float fundsToConsume, EnumMap<Resources, Float> resourcesToConsume) {
-		funds -= fundsToConsume;
+	public void consumeResources(float fundsToConsume, EnumMap<Resources, Float> resourcesToConsume)
+			throws NotEnoughResourcesException {
+		EnumMap<Resources, Float> changedResources = GameUtils.getDefaultResourcesMap();
 		for (Map.Entry<Resources, Float> resource: resourcesToConsume.entrySet()) {
-			float updatedResourceAmount = resources.get(resource.getKey()) + resource.getValue();
-			resources.put(resource.getKey(), updatedResourceAmount);
+			float updatedResourceAmount = resources.get(resource.getKey()) - resource.getValue();
+			if (updatedResourceAmount < 0) throw new NotEnoughResourcesException(resource.getKey());
+			changedResources.put(resource.getKey(), updatedResourceAmount);
 		}
+
+		funds -= fundsToConsume;
+		resources.putAll(changedResources);
 	}
 
 	public void recalculateResourceChanges() {
-		EnumMap<Resources, Float> newResourceChange = getInitialResourceMap();
+		EnumMap<Resources, Float> newResourceChange = GameUtils.getDefaultResourcesMap();
 		float newFundsChange = 0.0f;
 
 		for (Region region: regions) {
@@ -78,7 +81,7 @@ public class Country {
 		}
 
 		this.fundsChange = newFundsChange;
-		this.resourcesChange = newResourceChange;
+		resourcesChange.putAll(newResourceChange);
 	}
 
 	private void insertBuildingEffectResourceChange(
@@ -97,15 +100,6 @@ public class Country {
 			float generatedResourceAmount = random.nextFloat(MIN_RESOURCES_FOR_COUNTRY, MAX_RESOURCES_FOR_COUNTRY);
 			resources.put(resource, generatedResourceAmount);
 		}
-	}
-
-	private EnumMap<Resources, Float> getInitialResourceMap() {
-		EnumMap<Resources, Float> resMap = new EnumMap<>(Resources.class);
-		for (Resources resource: Resources.values()) {
-			resMap.put(resource, 0.0f);
-		}
-
-		return resMap;
 	}
 
 }

@@ -16,7 +16,6 @@ public class GameUtils {
 
 	public static JsonNode getConfigNode(String configFileName, String... nodeKeyPath) throws IOException {
 		JsonNode node = objectMapper.readTree(new File(configFileName));
-
 		for (String key: nodeKeyPath) {
 			node = node.get(key);
 		}
@@ -25,7 +24,7 @@ public class GameUtils {
 	}
 
 	public static EnumMap<Resources, Float> jsonNodeToResourcesMap(JsonNode node) {
-		EnumMap<Resources, Float> resourcesMap = new EnumMap<>(Resources.class);
+		EnumMap<Resources, Float> resourcesMap = getDefaultResourcesMap();
 		Iterator<Map.Entry<String, JsonNode>> elements = node.fields();
 
 		while(elements.hasNext()) {
@@ -37,4 +36,14 @@ public class GameUtils {
 
 		return resourcesMap;
 	}
+
+	public static EnumMap<Resources, Float> getDefaultResourcesMap() {
+		EnumMap<Resources, Float> resMap = new EnumMap<>(Resources.class);
+		for (Resources resource: Resources.values()) {
+			resMap.put(resource, 0.0f);
+		}
+
+		return resMap;
+	}
+
 }
