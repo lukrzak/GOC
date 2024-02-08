@@ -5,17 +5,19 @@ import com.lukrzak.goc.gamebackend.game.GameUtils;
 import com.lukrzak.goc.gamebackend.game.building.Building;
 import com.lukrzak.goc.gamebackend.game.building.BuildingFactory;
 import com.lukrzak.goc.gamebackend.game.building.BuildingTypes;
+import com.lukrzak.goc.gamebackend.game.country.NotEnoughResourcesException;
 import com.lukrzak.goc.gamebackend.game.country.Region;
 import com.lukrzak.goc.gamebackend.game.country.Resources;
 
 import java.io.IOException;
 import java.util.EnumMap;
+import java.util.Optional;
 
 public class EventFactory {
 
 	private static final String BUILDING_CONFIG_FILE = "building_config.json";
 
-	public static Event createBuildEvent(Region region, BuildingTypes type, int currentTime) {
+	public static Optional<Event> createBuildEvent(Region region, BuildingTypes type, int currentTime) {
 		final int HOURS_IN_DAY = 24;
 		final String BUILDING_COST_NODE = "buildingCost";
 		final String COST_NODE = "cost";
@@ -37,10 +39,16 @@ public class EventFactory {
 		int timeToFinish = buildingConfig.get(DAYS_TO_BUILD_NODE).asInt() * HOURS_IN_DAY;
 		Building buildingOnFinish = BuildingFactory.createBuilding(type);
 
-		Runnable onStart = () -> region.getCountry().consumeResources(fundsToConsume, resourcesToConsume);
+		try {
+			region.getCountry().consumeResources(fundsToConsume, resourcesToConsume);
+		}
+		catch (NotEnoughResourcesException e) {
+			return Optional.empty();
+		}
+
 		Runnable onFinish = () -> region.finishBuilding(buildingOnFinish);
 
-		return new Event(onStart, onFinish, currentTime + timeToFinish);
+		return Optional.of(new Event(onFinish, currentTime + timeToFinish));
 	}
 
 }
