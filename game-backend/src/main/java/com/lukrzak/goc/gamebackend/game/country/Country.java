@@ -2,6 +2,8 @@ package com.lukrzak.goc.gamebackend.game.country;
 
 import com.lukrzak.goc.gamebackend.game.building.Building;
 import com.lukrzak.goc.gamebackend.game.building.BuildingEffect;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -9,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+@Getter
+@Setter
 public class Country {
 
 	private int id;
@@ -18,7 +22,7 @@ public class Country {
 	private float taxRate;
 	private final List<Region> regions = new ArrayList<>();
 	private final EnumMap<Resources, Float> resources = new EnumMap<>(Resources.class);
-	private EnumMap<Resources, Float> resourcesChange = new EnumMap<>(Resources.class);
+	private EnumMap<Resources, Float> resourcesChange = getInitialResourceMap();
 
 	public Country(int id, String name, float startingFunds) {
 		this.id = id;
@@ -28,7 +32,6 @@ public class Country {
 		this.taxRate = 0.1f;
 
 		initializeStartingResources();
-		initializeStartingResourceChange();
 	}
 
 	public void assignRegionToCountry(Region region) {
@@ -61,7 +64,7 @@ public class Country {
 	}
 
 	public void recalculateResourceChanges() {
-		EnumMap<Resources, Float> newResourceChange = new EnumMap<>(Resources.class);
+		EnumMap<Resources, Float> newResourceChange = getInitialResourceMap();
 		float newFundsChange = 0.0f;
 
 		for (Region region: regions) {
@@ -96,10 +99,13 @@ public class Country {
 		}
 	}
 
-	private void initializeStartingResourceChange() {
+	private EnumMap<Resources, Float> getInitialResourceMap() {
+		EnumMap<Resources, Float> resMap = new EnumMap<>(Resources.class);
 		for (Resources resource: Resources.values()) {
-			resourcesChange.put(resource, 0.0f);
+			resMap.put(resource, 0.0f);
 		}
+
+		return resMap;
 	}
 
 }
