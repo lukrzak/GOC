@@ -1,7 +1,11 @@
-package com.lukrzak.goc.gamebackend.game.building;
+package com.lukrzak.goc.gamebackend.game;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.lukrzak.goc.gamebackend.game.GameUtils;
+import com.lukrzak.goc.gamebackend.game.building.Building;
+import com.lukrzak.goc.gamebackend.game.building.BuildingEffect;
+import com.lukrzak.goc.gamebackend.game.building.BuildingFactory;
+import com.lukrzak.goc.gamebackend.game.building.BuildingTypes;
 import com.lukrzak.goc.gamebackend.game.country.Resources;
 import org.junit.jupiter.api.Test;
 

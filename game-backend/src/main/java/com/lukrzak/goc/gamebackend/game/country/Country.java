@@ -27,17 +27,8 @@ public class Country {
 		this.fundsChange = 0.0f;
 		this.taxRate = 0.1f;
 
-		Random random = new Random();
-		final float MIN_RESOURCES_FOR_COUNTRY = 20.0f;
-		final float MAX_RESOURCES_FOR_COUNTRY = 50.0f;
-		for (Resources resource: Resources.values()) {
-			float generatedResourceAmount = random.nextFloat(MIN_RESOURCES_FOR_COUNTRY, MAX_RESOURCES_FOR_COUNTRY);
-			resources.put(resource, generatedResourceAmount);
-		}
-
-		for (Resources resource: Resources.values()) {
-			resourcesChange.put(resource, 0.0f);
-		}
+		initializeStartingResources();
+		initializeStartingResourceChange();
 	}
 
 	public void assignRegionToCountry(Region region) {
@@ -92,6 +83,22 @@ public class Country {
 		for (Map.Entry<Resources, Float> resourceEntry: effect.getResourcesChange().entrySet()) {
 			float newResourceValue = recalculatedResourceChange.get(resourceEntry.getKey()) + resourceEntry.getValue();
 			recalculatedResourceChange.put(resourceEntry.getKey(), newResourceValue);
+		}
+	}
+
+	private void initializeStartingResources() {
+		Random random = new Random();
+		final float MIN_RESOURCES_FOR_COUNTRY = 20.0f;
+		final float MAX_RESOURCES_FOR_COUNTRY = 50.0f;
+		for (Resources resource: Resources.values()) {
+			float generatedResourceAmount = random.nextFloat(MIN_RESOURCES_FOR_COUNTRY, MAX_RESOURCES_FOR_COUNTRY);
+			resources.put(resource, generatedResourceAmount);
+		}
+	}
+
+	private void initializeStartingResourceChange() {
+		for (Resources resource: Resources.values()) {
+			resourcesChange.put(resource, 0.0f);
 		}
 	}
 
